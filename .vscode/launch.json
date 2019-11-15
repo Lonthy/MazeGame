@@ -1,0 +1,11 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - GameGui",
+      "request": "launch",
+      "mainClass": "GameGui",
+      "projectName": "MazeGame_f3e9d3cb"
+    }
+  ]
+}

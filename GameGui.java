@@ -165,6 +165,7 @@ public class GameGui extends JFrame implements ActionListener
              for (int i = 0; i < scrapMatrix.length; i++){
                 for (int j = 0; j < scrapMatrix[i].length; j++){
                     scrapMatrix[i][j]= temp[i][j];//create a new matrix so we dont have a refrence to another objects matrix!
+                    System.out.printf("*** %s\n", temp[i][j]);
               }}//end double for loop
              timeCalc = new TimeCalculator();//create the time calculator used to determine how much time each level is given.
              timeCalc.calcTimeforMaze(fl.dimondCount(),fl.getMatrixSizeRow(),fl.getMatrixSizeColumn());//let time calculator know the parameters of the game 
