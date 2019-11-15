@@ -32,7 +32,11 @@ public class TheArchitect extends JFrame
         {
         for (int j = 0; j < levelBlockMatrix[i].length; j++) 
         {
+<<<<<<< HEAD
+           if(levelBlockMatrix[i][j].toString().equals("P"))//we found the player
+=======
            if(levelBlockMatrix[i][j].equals("P"))//we found the player
+>>>>>>> c478681269bcfe487e73b857f871a24848cc4aaf
            {
             x=i;//record the players position
             y=j;
@@ -42,13 +46,6 @@ public class TheArchitect extends JFrame
         }}//end both for loops
 
             levelBlockMatrix[x+xScale][y+yScale].collision(this, x, y, xScale, yScale);
-
-            if(currentMatrix[x+xScale][y+yScale].equals("M") && currentMatrix[x+(xScale*2)][y+(yScale*2)].equals("N"))//move a moveable wall
-            {
-                updatedMatrix[x][y]="N";
-                updatedMatrix[x+xScale][y+yScale]="P"; 
-                updatedMatrix[x+(xScale*2)][y+(yScale*2)]="M";
-            }
                 
             if(collected==totalDimonds)//if we have all the dimonds give the player the exit
                 showWall();                    
