@@ -23,13 +23,16 @@ public class TheArchitect extends JFrame
        int y=0;
        int found=0;
        globalTotalDimonds=totalDimonds; //use this later for the gui dimond count
+
+       Block[][] levelBlockMatrix = buildBlockMatrix(currentMatrix);
+       updatedMatrix = currentMatrix;
+
        nextLevel(false); //dont go to the next level yet.
-       String[][] junkMatrix=currentMatrix;//we will be updating currentMatrix  
-        for (int i = 0; i < currentMatrix.length; i++) //for loop will find were the player is now
+        for (int i = 0; i < levelBlockMatrix.length; i++) //for loop will find were the player is now
         {
-        for (int j = 0; j < currentMatrix[i].length; j++) 
+        for (int j = 0; j < levelBlockMatrix[i].length; j++) 
         {
-           if(currentMatrix[i][j].equals("P"))//we found the player
+           if(levelBlockMatrix[i][j].equals("P"))//we found the player
            {
             x=i;//record the players position
             y=j;
@@ -37,44 +40,29 @@ public class TheArchitect extends JFrame
             break;
            }
         }}//end both for loops
-            if(currentMatrix[x+xScale][y+yScale].equals("H"))//its a hidden dimond
+
+            levelBlockMatrix[x+xScale][y+yScale].collision(this, x, y, xScale, yScale);
+
+            if(currentMatrix[x+xScale][y+yScale].equals("M") && currentMatrix[x+(xScale*2)][y+(yScale*2)].equals("N"))//move a moveable wall
             {
-                currentMatrix[x][y]="N";
-                currentMatrix[x+xScale][y+yScale]="P";
-                currentMatrix[x][y]="N";
-                collected+=1;//we got a hidden dimond! wow!
+                updatedMatrix[x][y]="N";
+                updatedMatrix[x+xScale][y+yScale]="P"; 
+                updatedMatrix[x+(xScale*2)][y+(yScale*2)]="M";
             }
-            else if(currentMatrix[x+xScale][y+yScale].equals("D"))//its a dimond
-            {
-                currentMatrix[x][y]="N";
-                currentMatrix[x+xScale][y+yScale]="P";
-                collected+=1;//we got a dimond
-            }
-            else if(currentMatrix[x+xScale][y+yScale].equals("M") && currentMatrix[x+(xScale*2)][y+(yScale*2)].equals("N"))//move a moveable wall
-            {
-                currentMatrix[x][y]="N";
-                currentMatrix[x+xScale][y+yScale]="P"; 
-                currentMatrix[x+(xScale*2)][y+(yScale*2)]="M";
-            }
-            else if (currentMatrix[x+xScale][y+yScale].equals("N"))//normal move foward onto nothing
-            {
-                currentMatrix[x][y]="N";
-                currentMatrix[x+xScale][y+yScale]="P"; 
-            }
-            else if (currentMatrix[x+xScale][y+yScale].equals("E"))//its an exit
-            {
-                currentMatrix[x][y]="N";
-                currentMatrix[x+xScale][y+yScale]="P"; 
-                nextLevel(true);//allow the next level to be loaded.
-            }
-            else
-               throw new StupidAssMove("Ass Hole hit wall!");
                 
             if(collected==totalDimonds)//if we have all the dimonds give the player the exit
-            showWall();
-               
-            updatedMatrix=currentMatrix;  //we will return updatedMatrix for the gui                     
+                showWall();                    
         }//end method
+    
+    private Block[][] buildBlockMatrix(String[][] matrix) {
+        Block[][] blockMatrix = new Block[matrix.length][matrix[0].length];
+
+        for(int i = 0; i < matrix.length; i++)
+            for(int j = 0; j < matrix[i].length; j++)
+                blockMatrix[i][j] = BlockFactory.createBlock(matrix[i][j]);
+        
+        return blockMatrix;
+    }
 
     public void nextLevel(boolean tOrF)//true we go to next level, false we update current level's gui 
     {
