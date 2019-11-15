@@ -17,7 +17,7 @@ public class TheArchitect extends JFrame
        updatedMatrix[WallXCord][WallYCord]="E";  
    }
 
-    public void playerMove(int xScale, int yScale, String[][] currentMatrix,int totalDimonds)throws StupidAssMove
+    public void playerMove(int xScale, int yScale, String[][] currentMatrix,int totalDimonds)
     {
        int x=0;
        int y=0;
@@ -37,44 +37,53 @@ public class TheArchitect extends JFrame
             break;
            }
         }}//end both for loops
-            if(currentMatrix[x+xScale][y+yScale].equals("H"))//its a hidden dimond
-            {
-                currentMatrix[x][y]="N";
-                currentMatrix[x+xScale][y+yScale]="P";
-                currentMatrix[x][y]="N";
-                collected+=1;//we got a hidden dimond! wow!
-            }
-            else if(currentMatrix[x+xScale][y+yScale].equals("D"))//its a dimond
-            {
-                currentMatrix[x][y]="N";
-                currentMatrix[x+xScale][y+yScale]="P";
-                collected+=1;//we got a dimond
-            }
-            else if(currentMatrix[x+xScale][y+yScale].equals("M") && currentMatrix[x+(xScale*2)][y+(yScale*2)].equals("N"))//move a moveable wall
-            {
-                currentMatrix[x][y]="N";
-                currentMatrix[x+xScale][y+yScale]="P"; 
-                currentMatrix[x+(xScale*2)][y+(yScale*2)]="M";
-            }
-            else if (currentMatrix[x+xScale][y+yScale].equals("N"))//normal move foward onto nothing
-            {
-                currentMatrix[x][y]="N";
-                currentMatrix[x+xScale][y+yScale]="P"; 
-            }
-            else if (currentMatrix[x+xScale][y+yScale].equals("E"))//its an exit
-            {
-                currentMatrix[x][y]="N";
-                currentMatrix[x+xScale][y+yScale]="P"; 
-                nextLevel(true);//allow the next level to be loaded.
-            }
-            else
-               throw new StupidAssMove("Ass Hole hit wall!");
+        
+        try {
+            currentMatrix = moveBlocks(currentMatrix,x,y,xScale,yScale);
+        }catch(ArrayIndexOutOfBoundsException exception) {
+        	throw new StupidAssMove("Ass Hole hit wall!");
+        }
                 
             if(collected==totalDimonds)//if we have all the dimonds give the player the exit
             showWall();
                
             updatedMatrix=currentMatrix;  //we will return updatedMatrix for the gui                     
         }//end method
+    
+    public String[][] moveBlocks(String matrix[][], int x, int y, int xScale, int yScale){
+    	if(matrix[x+xScale][y+yScale].equals("H")){
+            matrix[x][y]="N";
+            matrix[x+xScale][y+yScale]="P";
+            matrix[x][y]="N";
+            collected+=1;
+            return matrix;
+        }
+    	if(matrix[x+xScale][y+yScale].equals("D")){
+            matrix[x][y]="N";
+            matrix[x+xScale][y+yScale]="P";
+            collected+=1;
+            return matrix;
+    	}
+    	if(matrix[x+xScale][y+yScale].equals("M") && matrix[x+(xScale*2)][y+(yScale*2)].equals("N")){
+            matrix[x][y]="N";
+            matrix[x+xScale][y+yScale]="P"; 
+            matrix[x+(xScale*2)][y+(yScale*2)]="M";
+            return matrix;
+        }
+    	if (matrix[x+xScale][y+yScale].equals("N")){
+            matrix[x][y]="N";
+            matrix[x+xScale][y+yScale]="P";
+            return matrix;
+        }
+    	if (matrix[x+xScale][y+yScale].equals("E")){
+            matrix[x][y]="N";
+            matrix[x+xScale][y+yScale]="P"; 
+            nextLevel(true);
+            return matrix;
+        }
+    	
+    	throw new StupidAssMove("Ass Hole hit wall!");
+    }
 
     public void nextLevel(boolean tOrF)//true we go to next level, false we update current level's gui 
     {
