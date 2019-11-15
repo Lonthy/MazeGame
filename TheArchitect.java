@@ -32,7 +32,11 @@ public class TheArchitect extends JFrame
         {
         for (int j = 0; j < levelBlockMatrix[i].length; j++) 
         {
+<<<<<<< HEAD
            if(levelBlockMatrix[i][j].toString().equals("P"))//we found the player
+=======
+           if(levelBlockMatrix[i][j].equals("P"))//we found the player
+>>>>>>> c478681269bcfe487e73b857f871a24848cc4aaf
            {
             x=i;//record the players position
             y=j;
